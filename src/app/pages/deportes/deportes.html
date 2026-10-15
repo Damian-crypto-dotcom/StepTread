@@ -1,0 +1,181 @@
+<div class="deportes-page">
+
+  <img
+    src="https://cdn.phototourl.com/member/2026-09-28-5ce3d031-b419-458b-a868-b011ad3023d8.png"
+    class="logo"
+    alt="StepTread">
+
+  <a routerLink="/profile" class="back-button">← Volver</a>
+
+  <header class="page-header">
+    <h1>Deportes</h1>
+    <p class="subtitle">Mapa, clases y avisos en un solo lugar</p>
+  </header>
+
+  <div class="layout">
+
+    <section class="panel map-panel">
+      <div class="panel-top">
+        <div>
+          <p class="eyebrow">Mapa</p>
+          <h2>Lugares etiquetados</h2>
+        </div>
+        <button
+          type="button"
+          class="btn"
+          [class.active]="labelMode()"
+          (click)="toggleLabelMode()">
+          {{ labelMode() ? 'Toca el mapa…' : '+ Añadir etiqueta' }}
+        </button>
+      </div>
+
+      <div #mapHost class="map-host"></div>
+
+      @if (selectedLabel(); as sel) {
+        <div class="pin-card">
+          <div>
+            <h3>{{ sel.title }}</h3>
+            @if (sel.note) {
+              <p>{{ sel.note }}</p>
+            }
+            <p class="coords">{{ sel.lat | number:'1.4-4' }}, {{ sel.lng | number:'1.4-4' }}</p>
+          </div>
+          <button type="button" class="link-danger" (click)="removeLabel(sel.id)">Quitar</button>
+        </div>
+      }
+    </section>
+
+    <div class="side">
+
+      <section class="panel">
+        <div class="panel-top">
+          <div>
+            <p class="eyebrow">Calendario</p>
+            <h2>Clases de la semana</h2>
+          </div>
+          <button type="button" class="btn outline" (click)="showClassForm.set(true)">+ Clase</button>
+        </div>
+
+        <div class="day-row">
+          @for (d of days; track $index) {
+            <button
+              type="button"
+              class="day-chip"
+              [class.active]="selectedDay() === $index"
+              (click)="selectedDay.set($index)">
+              {{ d }}
+            </button>
+          }
+        </div>
+
+        <ul class="class-list">
+          @if (dayClasses().length === 0) {
+            <li class="empty">No hay clases este día.</li>
+          } @else {
+            @for (c of dayClasses(); track c.id) {
+              <li class="class-item">
+                <div>
+                  <strong>{{ c.title }}</strong>
+                  <span>{{ c.start }}–{{ c.end }} · {{ c.coach }}</span>
+                  <em>{{ c.place }}</em>
+                </div>
+                <button type="button" class="link-danger" (click)="removeClass(c.id)">×</button>
+              </li>
+            }
+          }
+        </ul>
+      </section>
+
+      <section class="panel">
+        <div class="panel-top">
+          <div>
+            <p class="eyebrow">Tablero</p>
+            <h2>
+              Notificaciones
+              @if (unreadCount() > 0) {
+                <span class="badge">{{ unreadCount() }}</span>
+              }
+            </h2>
+          </div>
+          @if (unreadCount() > 0) {
+            <button type="button" class="btn ghost" (click)="markAllRead()">Marcar leídas</button>
+          }
+        </div>
+
+        <ul class="notice-list">
+          @for (n of notices(); track n.id) {
+            <li
+              class="notice-item"
+              [class.unread]="!n.read"
+              (click)="markRead(n.id)">
+              <div class="notice-meta">
+                <span>{{ n.kind }}</span>
+                <span>{{ relativeTime(n.at) }}</span>
+              </div>
+              <strong>{{ n.title }}</strong>
+              <p>{{ n.body }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  @if (showLabelForm()) {
+    <div class="modal-backdrop" (click)="showLabelForm.set(false)">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>Nueva etiqueta</h3>
+        <label>
+          Nombre
+          <input [(ngModel)]="draftTitle" placeholder="Cancha 3, vestidores…">
+        </label>
+        <label>
+          Nota
+          <input [(ngModel)]="draftNote" placeholder="Horario, cómo llegar…">
+        </label>
+        <button type="button" class="btn full" (click)="saveLabel()">Guardar en el mapa</button>
+      </div>
+    </div>
+  }
+
+  @if (showClassForm()) {
+    <div class="modal-backdrop" (click)="showClassForm.set(false)">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>Nueva clase</h3>
+        <label>
+          Título
+          <input [(ngModel)]="classTitle" placeholder="Fútbol, tenis…">
+        </label>
+        <label>
+          Coach
+          <input [(ngModel)]="classCoach" placeholder="Nombre del entrenador">
+        </label>
+        <label>
+          Día
+          <select [(ngModel)]="classDay">
+            @for (d of days; track $index) {
+              <option [ngValue]="$index">{{ d }}</option>
+            }
+          </select>
+        </label>
+        <div class="row">
+          <label>
+            Inicio
+            <input type="time" [(ngModel)]="classStart">
+          </label>
+          <label>
+            Fin
+            <input type="time" [(ngModel)]="classEnd">
+          </label>
+        </div>
+        <label>
+          Lugar
+          <input [(ngModel)]="classPlace" placeholder="Cancha 1">
+        </label>
+        <button type="button" class="btn full" (click)="saveClass()">Agregar clase</button>
+      </div>
+    </div>
+  }
+
+</div>

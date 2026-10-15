@@ -1,0 +1,116 @@
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  width: 110px;
+  height: auto;
+}
+.profilepro-page {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+ padding: 120px 20px 30px;
+  font-family: Arial, sans-serif;
+  background-color: #d7ffef;
+}
+
+.profilepro-options {
+  display: flex;
+  gap: 22px;
+  width: 100%;
+}
+
+.profilepro-button {
+  position: relative;
+
+  width: 50%;
+  height: 115px;
+
+  border-radius: 17px;
+  padding: 17px;
+
+  display: flex;
+  align-items: center;
+
+  text-align: left;
+  cursor: pointer;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* DEPORTES */
+
+.deportes {
+  background-color: #FFF0F1;
+  border: 1px solid #EF3340;
+  color: #EF3340;
+}
+
+/* ESTUDIO */
+
+.estudio {
+  background-color: #EAF7F5;
+  border: 1px solid #28AFA6;
+  color: #28AFA6;
+}
+
+
+/* ICONO */
+
+.button-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+
+  margin-right: 15px;
+}
+
+
+/* TEXTO */
+
+.button-text h2 {
+  margin: 0 0 4px;
+
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.button-text p {
+  margin: 0;
+
+  font-size: 9px;
+  color: #444;
+}
+
+
+/* FLECHA */
+
+.arrow {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  font-size: 28px;
+  font-weight: 300;
+}
+
+
+/* EFECTO AL PASAR EL MOUSE */
+
+.profilepro-button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+/* EFECTO AL HACER CLICK */
+
+.profilepro-button:active {
+  transform: scale(0.98);
+}
